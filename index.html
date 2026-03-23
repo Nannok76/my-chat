@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>SIGNAL — чат</title>
-<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;700&family=Syne:wght@400;600;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono  :wght@300;400;500;700&family=Syne:wght@400;600;800&display=swap" rel="stylesheet">
 <style>
   *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
   :root{
@@ -65,14 +65,17 @@
   @keyframes msgIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
   .msg-group.me .bubble{background:var(--accent);color:white;border-bottom-right-radius:4px}
   .msg-group.other .bubble{background:var(--surface2);border:1px solid var(--border);border-bottom-left-radius:4px}
+  .bubble img{max-width:100%;display:block;border-radius:8px;margin:4px 0}
   .sys-msg{text-align:center;font-size:11px;color:var(--muted);padding:6px 0;letter-spacing:1px}
 
   /* INPUT */
   .input-area{padding:16px 24px;border-top:1px solid var(--border);background:var(--surface);flex-shrink:0}
-  .input-row{display:flex;align-items:flex-end;gap:10px;background:var(--surface2);border:1px solid var(--border);border-radius:12px;padding:10px 14px;transition:border-color .2s}
+  .input-row{display:flex;align-items:center;gap:10px;background:var(--surface2);border:1px solid var(--border);border-radius:12px;padding:10px 14px;transition:border-color .2s}
   .input-row:focus-within{border-color:var(--accent)}
-  #msgInput{flex:1;background:none;border:none;outline:none;color:var(--text);font-family:'JetBrains Mono',monospace;font-size:13px;resize:none;max-height:120px;line-height:1.5}
+  #msgInput{flex:1;background:none;border:none;outline:none;color:var(--text);font-family:'JetBrains Mono',monospace;font-size:13px;resize:none;max-height:120px;line-height:1.5;padding-top:8px}
   #msgInput::placeholder{color:var(--muted)}
+  .icon-btn{background:none;border:none;color:var(--muted);cursor:pointer;font-size:18px;display:flex;align-items:center;justify-content:center;transition:color .2s}
+  .icon-btn:hover{color:var(--accent)}
   .send-btn{background:var(--accent);border:none;border-radius:8px;width:34px;height:34px;display:flex;align-items:center;justify-content:center;cursor:pointer;color:white;font-size:15px;transition:opacity .2s,transform .1s;flex-shrink:0}
   .send-btn:hover{opacity:.85}
   .send-btn:active{transform:scale(.93)}
@@ -81,7 +84,6 @@
 </head>
 <body>
 
-<!-- JOIN SCREEN -->
 <div id="joinScreen">
   <div class="join-box">
     <div class="join-title">SIGNAL</div>
@@ -99,7 +101,6 @@
   </div>
 </div>
 
-<!-- MAIN UI -->
 <div class="header">
   <div class="logo">SIGNAL</div>
   <div class="status-bar">
@@ -117,6 +118,9 @@
     <div id="messages"></div>
     <div class="input-area">
       <div class="input-row">
+        <input type="file" id="imgInput" accept="image/*" style="display:none" onchange="sendImage(this)">
+        <button class="icon-btn" onclick="document.getElementById('imgInput').click()">📎</button>
+        
         <textarea id="msgInput" rows="1" placeholder="Написать сообщение..." disabled></textarea>
         <button class="send-btn" id="sendBtn" onclick="sendMsg()" disabled>➤</button>
       </div>
@@ -191,7 +195,6 @@ function connect() {
   };
 }
 
-// Цвета по имени
 function nameColor(name) {
   const colors = ['#7c6dfa','#fa6d8a','#4dfa9a','#facc4d','#4dc8fa','#fa9a4d','#c84dfa'];
   let h = 0;
@@ -208,14 +211,22 @@ function addMessage(msg) {
 
   const meta = document.createElement('div');
   meta.className = 'msg-meta';
-  meta.innerHTML = `<span class="mname" style="color:${nameColor(msg.name)}">${msg.name}</span><span>${msg.time}</span>`;
+  meta.innerHTML = `<span class="mname" style="color:${nameColor(msg.name)}">${msg.name}</span><span>${msg.time || ''}</span>`;
   group.appendChild(meta);
 
   const bubble = document.createElement('div');
   bubble.className = 'bubble';
-  bubble.textContent = msg.text;
+  
+  // ПРОВЕРКА: Изображение или текст
+  if (msg.isImage) {
+    const img = document.createElement('img');
+    img.src = msg.text;
+    bubble.appendChild(img);
+  } else {
+    bubble.textContent = msg.text;
+  }
+  
   group.appendChild(bubble);
-
   msgs.appendChild(group);
   msgs.scrollTop = msgs.scrollHeight;
 }
@@ -250,9 +261,25 @@ function sendMsg() {
   const input = document.getElementById('msgInput');
   const text = input.value.trim();
   if (!text || !ws || ws.readyState !== 1) return;
-  ws.send(JSON.stringify({ type: 'message', text }));
+  ws.send(JSON.stringify({ type: 'message', text, isImage: false }));
   input.value = '';
   input.style.height = 'auto';
+}
+
+function sendImage(input) {
+  const file = input.files[0];
+  if (!file || !ws || ws.readyState !== 1) return;
+
+  const reader = new FileReader();
+  reader.onload = function(e) {
+    ws.send(JSON.stringify({ 
+      type: 'message', 
+      text: e.target.result, 
+      isImage: true 
+    }));
+  };
+  reader.readAsDataURL(file);
+  input.value = ''; // Очистить, чтобы можно было отправить то же фото
 }
 
 document.getElementById('msgInput').addEventListener('input', function() {
