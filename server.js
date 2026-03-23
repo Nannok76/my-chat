@@ -1,88 +1,68 @@
 const WebSocket = require('ws');
 
-// Railway даёт порт динамически через переменные окружения
+// Используем порт из настроек Railway или 8080 для локалки
 const PORT = process.env.PORT || 8080;
-const server = new WebSocket.Server({ port: PORT });
+const wss = new WebSocket.Server({ port: PORT });
 
-// Хранилище истории (последние 50 сообщений)
-let history = [];
-// Список активных пользователей: { ws_объект: "Имя" }
-const users = new Map();
+let messages = []; // История последних 50 сообщений
+let users = new Map(); // Список пользователей в сети
 
-console.log(`WebSocket сервер запущен на порту ${PORT}`);
+wss.on('connection', (ws) => {
+    ws.on('message', (message) => {
+        const data = JSON.parse(message);
 
-server.on('connection', (ws) => {
-  console.log('Новое подключение');
+        // Логика входа в чат
+        if (data.type === 'join') {
+            ws.name = data.name;
+            users.set(ws, data.name);
+            
+            // Отправляем историю сообщений новому пользователю
+            ws.send(JSON.stringify({ type: 'history', messages }));
+            
+            // Уведомляем всех о новом пользователе
+            broadcast({ type: 'system', text: `${data.name} вошёл в чат` });
+            broadcastUsers();
+        }
 
-  ws.on('message', (message) => {
-    try {
-      const data = JSON.parse(message);
+        // Логика обычного сообщения или картинки
+        if (data.type === 'message') {
+            const newMessage = {
+                type: 'message',
+                name: ws.name,
+                text: data.text,
+                isImage: data.isImage || false, // ПЕРЕДАЕМ ПАРАМЕТР КАРТИНКИ
+                time: new Date().toLocaleTimeString('ru-RU', { hour: '2-digit', minute: '2-digit' })
+            };
 
-      // 1. Обработка входа пользователя
-      if (data.type === 'join') {
-        ws.name = data.name;
-        users.set(ws, data.name);
+            messages.push(newMessage);
+            if (messages.length > 50) messages.shift(); // Храним только последние 50
 
-        // Отправляем новичку историю сообщений
-        ws.send(JSON.stringify({ type: 'history', messages: history }));
+            broadcast(newMessage);
+        }
+    });
 
-        // Оповещаем всех о новом пользователе
-        broadcastSystem(`${data.name} вошёл в чат`);
-        broadcastUsersList();
-      }
-
-      // 2. Обработка обычных сообщений (текст или картинка)
-      if (data.type === 'message') {
-        const time = new Date().toLocaleTimeString('ru-RU', { hour: '2-digit', minute: '2-digit' });
-        
-        const newMessage = {
-          type: 'message',
-          name: ws.name || 'Аноним',
-          text: data.text,
-          isImage: data.isImage || false, // Сервер теперь запоминает, картинка это или нет
-          time: time
-        };
-
-        // Добавляем в историю и держим лимит в 50 сообщений
-        history.push(newMessage);
-        if (history.length > 50) history.shift();
-
-        // Рассылаем всем
-        broadcast(newMessage);
-      }
-
-    } catch (e) {
-      console.error('Ошибка обработки сообщения:', e);
-    }
-  });
-
-  // Обработка отключения
-  ws.on('close', () => {
-    if (ws.name) {
-      users.delete(ws);
-      broadcastSystem(`${ws.name} покинул чат`);
-      broadcastUsersList();
-    }
-  });
+    ws.on('close', () => {
+        if (ws.name) {
+            broadcast({ type: 'system', text: `${ws.name} покинул чат` });
+            users.delete(ws);
+            broadcastUsers();
+        }
+    });
 });
 
-// Функция отправки всем подключённым клиентам
+// Функция рассылки всем подключенным клиентам
 function broadcast(data) {
-  const msg = JSON.stringify(data);
-  server.clients.forEach((client) => {
-    if (client.readyState === WebSocket.OPEN) {
-      client.send(msg);
-    }
-  });
+    wss.clients.forEach(client => {
+        if (client.readyState === WebSocket.OPEN) {
+            client.send(JSON.stringify(data));
+        }
+    });
 }
 
-// Отправка системных уведомлений
-function broadcastSystem(text) {
-  broadcast({ type: 'system', text });
+// Функция обновления списка пользователей онлайн
+function broadcastUsers() {
+    const userNames = Array.from(users.values());
+    broadcast({ type: 'users', users: userNames });
 }
 
-// Отправка актуального списка людей онлайн
-function broadcastUsersList() {
-  const currentUsers = Array.from(users.values());
-  broadcast({ type: 'users', users: currentUsers });
-}
+console.log(`Сервер запущен на порту ${PORT}`);
