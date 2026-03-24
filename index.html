@@ -14,6 +14,7 @@
   }
   body{background:var(--bg);color:var(--text);font-family:'JetBrains Mono',monospace;height:100vh;overflow:hidden;display:flex;flex-direction:column}
 
+  /* JOIN */
   #joinScreen{position:fixed;inset:0;background:var(--bg);display:flex;align-items:center;justify-content:center;z-index:100}
   .join-box{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:40px;width:360px;display:flex;flex-direction:column;gap:16px}
   .join-title{font-family:'Syne',sans-serif;font-size:26px;font-weight:800;color:var(--accent);letter-spacing:4px;text-align:center}
@@ -27,6 +28,7 @@
   .conn-status{font-size:11px;text-align:center;color:var(--muted)}
   .conn-status.err{color:var(--red)}
 
+  /* HEADER */
   .header{display:flex;align-items:center;justify-content:space-between;padding:14px 24px;border-bottom:1px solid var(--border);background:var(--surface);flex-shrink:0}
   .logo{font-family:'Syne',sans-serif;font-weight:800;font-size:18px;letter-spacing:4px;color:var(--accent)}
   .status-bar{display:flex;align-items:center;gap:8px;font-size:11px;color:var(--muted)}
@@ -34,6 +36,7 @@
   .dot.off{background:var(--red);box-shadow:0 0 8px var(--red);animation:none}
   @keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
 
+  /* LAYOUT */
   .layout{display:flex;flex:1;overflow:hidden}
   .sidebar{width:200px;border-right:1px solid var(--border);display:flex;flex-direction:column;background:var(--surface);flex-shrink:0}
   .sidebar-hdr{padding:14px 16px 10px;font-size:10px;letter-spacing:3px;color:var(--muted);border-bottom:1px solid var(--border)}
@@ -42,92 +45,76 @@
   .uavatar{width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;flex-shrink:0;font-family:'Syne',sans-serif}
   .uname{flex:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
   .you-tag{font-size:9px;color:var(--accent);letter-spacing:1px}
-
-  /* TYPING INDICATOR in sidebar */
-  #typingBar{
-    padding:10px 16px;font-size:11px;color:var(--accent);
-    min-height:36px;display:flex;align-items:center;gap:8px;
-    border-top:1px solid var(--border);
-  }
+  #typingBar{padding:10px 16px;font-size:11px;color:var(--accent);min-height:36px;display:flex;align-items:center;gap:8px;border-top:1px solid var(--border)}
   .typing-dots{display:flex;gap:3px;align-items:center}
-  .typing-dots span{
-    width:5px;height:5px;border-radius:50%;background:var(--accent);
-    animation:tdot 1.2s infinite;
-  }
+  .typing-dots span{width:5px;height:5px;border-radius:50%;background:var(--accent);animation:tdot 1.2s infinite}
   .typing-dots span:nth-child(2){animation-delay:.2s}
   .typing-dots span:nth-child(3){animation-delay:.4s}
-  @keyframes tdot{0%,80%,100%{transform:scale(0.6);opacity:.4}40%{transform:scale(1);opacity:1}}
+  @keyframes tdot{0%,80%,100%{transform:scale(.6);opacity:.4}40%{transform:scale(1);opacity:1}}
 
+  /* MESSAGES */
   .chat-area{flex:1;display:flex;flex-direction:column;overflow:hidden}
   #messages{flex:1;overflow-y:auto;padding:20px 24px;display:flex;flex-direction:column;gap:2px}
   #messages::-webkit-scrollbar{width:4px}
   #messages::-webkit-scrollbar-thumb{background:var(--border);border-radius:2px}
 
-  /* TYPING BUBBLE in chat */
-  .typing-bubble{
-    display:flex;align-items:center;gap:6px;
-    padding:10px 14px;border-radius:14px;border-bottom-left-radius:4px;
-    background:var(--surface2);border:1px solid var(--border);
-    width:fit-content;margin-bottom:10px;
-    animation:msgIn .18s ease-out;
-  }
-  .typing-bubble .typing-dots span{background:var(--muted)}
+  .typing-bubble{display:flex;align-items:center;gap:6px;padding:10px 14px;border-radius:14px;border-bottom-left-radius:4px;background:var(--surface2);border:1px solid var(--border);width:fit-content;margin-bottom:10px;animation:msgIn .18s ease-out}
 
   .msg-group{display:flex;flex-direction:column;margin-bottom:4px;position:relative}
   .msg-group.me{align-items:flex-end}
   .msg-group.other{align-items:flex-start}
   .msg-meta{font-size:10px;color:var(--muted);margin-bottom:3px;display:flex;gap:6px;align-items:baseline}
   .msg-group.me .msg-meta{flex-direction:row-reverse}
+  .edited-tag{font-size:9px;color:var(--muted);font-style:italic}
 
-  /* MESSAGE WRAPPER (bubble + hover actions) */
+  /* CONTEXT MENU WRAPPER */
   .msg-wrap{position:relative;display:flex;align-items:center;gap:6px}
   .msg-group.me .msg-wrap{flex-direction:row-reverse}
 
-  .bubble{max-width:65%;padding:9px 14px;border-radius:14px;font-size:13px;line-height:1.6;word-break:break-word;animation:msgIn .18s ease-out}
+  .bubble{max-width:65%;padding:9px 14px;border-radius:14px;font-size:13px;line-height:1.6;word-break:break-word;animation:msgIn .18s ease-out;cursor:default}
   @keyframes msgIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
   .msg-group.me .bubble{background:var(--accent);color:white;border-bottom-right-radius:4px}
   .msg-group.other .bubble{background:var(--surface2);border:1px solid var(--border);border-bottom-left-radius:4px}
+  .bubble.deleted{opacity:.45;font-style:italic}
   .sys-msg{text-align:center;font-size:11px;color:var(--muted);padding:6px 0;letter-spacing:1px}
 
-  /* REACT BUTTON (appears on hover) */
-  .react-trigger{
-    background:var(--surface2);border:1px solid var(--border);
-    border-radius:20px;padding:3px 7px;font-size:14px;
-    cursor:pointer;opacity:0;transition:opacity .15s;
-    line-height:1;flex-shrink:0;
+  /* REPLY QUOTE inside bubble */
+  .reply-quote{
+    border-left:3px solid rgba(255,255,255,.4);
+    padding:4px 8px;margin-bottom:6px;border-radius:4px;
+    background:rgba(0,0,0,.15);font-size:11px;opacity:.85;
+    white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+    cursor:pointer;
   }
-  .msg-wrap:hover .react-trigger{opacity:1}
+  .msg-group.other .reply-quote{border-left-color:var(--accent);background:rgba(124,109,250,.1)}
+  .reply-quote .rq-name{font-weight:700;margin-bottom:1px}
+
+  /* ACTIONS (hover) */
+  .msg-actions{
+    display:flex;gap:2px;opacity:0;transition:opacity .15s;flex-shrink:0;
+  }
+  .msg-wrap:hover .msg-actions{opacity:1}
+  .act-btn{
+    background:var(--surface2);border:1px solid var(--border);
+    border-radius:6px;padding:4px 6px;font-size:13px;
+    cursor:pointer;color:var(--text);transition:background .1s;line-height:1;
+  }
+  .act-btn:hover{background:var(--border)}
+
+  /* REACTIONS */
+  .reactions{display:flex;flex-wrap:wrap;gap:4px;margin-top:4px}
+  .reaction-pill{display:flex;align-items:center;gap:3px;background:var(--surface2);border:1px solid var(--border);border-radius:20px;padding:2px 8px;font-size:13px;cursor:pointer;transition:border-color .15s;user-select:none}
+  .reaction-pill:hover{border-color:var(--accent)}
+  .reaction-pill.mine{border-color:var(--accent);background:rgba(124,109,250,.12)}
+  .reaction-pill .rn{font-size:11px;color:var(--muted)}
 
   /* EMOJI PICKER */
-  .emoji-picker{
-    position:absolute;bottom:calc(100% + 6px);
-    background:var(--surface);border:1px solid var(--border);
-    border-radius:12px;padding:8px;
-    display:none;gap:4px;flex-wrap:wrap;width:200px;
-    box-shadow:0 8px 24px rgba(0,0,0,.4);z-index:50;
-  }
+  .emoji-picker{position:absolute;bottom:calc(100% + 6px);background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:8px;display:none;gap:4px;flex-wrap:wrap;width:200px;box-shadow:0 8px 24px rgba(0,0,0,.4);z-index:50}
   .emoji-picker.show{display:flex}
   .msg-group.me .emoji-picker{right:0}
   .msg-group.other .emoji-picker{left:0}
-  .ep-emoji{
-    font-size:20px;cursor:pointer;padding:4px;border-radius:6px;
-    transition:background .1s;line-height:1;
-  }
+  .ep-emoji{font-size:20px;cursor:pointer;padding:4px;border-radius:6px;transition:background .1s;line-height:1}
   .ep-emoji:hover{background:var(--surface2)}
-
-  /* REACTIONS ROW */
-  .reactions{display:flex;flex-wrap:wrap;gap:4px;margin-top:4px}
-  .reaction-pill{
-    display:flex;align-items:center;gap:3px;
-    background:var(--surface2);border:1px solid var(--border);
-    border-radius:20px;padding:2px 8px;font-size:13px;
-    cursor:pointer;transition:border-color .15s,background .15s;
-    user-select:none;
-  }
-  .reaction-pill:hover{border-color:var(--accent)}
-  .reaction-pill.mine{border-color:var(--accent);background:rgba(124,109,250,.12)}
-  .reaction-pill .rc{font-size:13px}
-  .reaction-pill .rn{font-size:11px;color:var(--muted)}
 
   /* IMAGE */
   .img-bubble{max-width:65%;border-radius:12px;overflow:hidden;cursor:zoom-in;animation:msgIn .18s ease-out}
@@ -140,26 +127,40 @@
   .voice-bubble{display:flex;align-items:center;gap:10px;padding:10px 14px;border-radius:14px;animation:msgIn .18s ease-out;min-width:220px;max-width:320px}
   .msg-group.me .voice-bubble{background:var(--accent);border-bottom-right-radius:4px}
   .msg-group.other .voice-bubble{background:var(--surface2);border:1px solid var(--border);border-bottom-left-radius:4px}
-  .voice-play-btn{width:34px;height:34px;border-radius:50%;border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:13px;flex-shrink:0;transition:opacity .15s}
+  .voice-play-btn{width:34px;height:34px;border-radius:50%;border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:13px;flex-shrink:0}
   .msg-group.me .voice-play-btn{background:rgba(255,255,255,.25);color:white}
   .msg-group.other .voice-play-btn{background:var(--accent);color:white}
-  .voice-play-btn:hover{opacity:.8}
   .voice-waveform{flex:1;height:28px;display:flex;align-items:center;gap:2px;cursor:pointer}
-  .voice-bar{width:3px;border-radius:2px;background:currentColor;opacity:.4;transition:opacity .1s}
+  .voice-bar{width:3px;border-radius:2px;background:currentColor;opacity:.4}
   .msg-group.me .voice-bar{color:white}
   .msg-group.other .voice-bar{color:var(--accent)}
   .voice-bar.active{opacity:1}
-  .voice-duration{font-size:10px;opacity:.7;white-space:nowrap;font-family:'JetBrains Mono',monospace}
+  .voice-duration{font-size:10px;opacity:.7;white-space:nowrap}
   .msg-group.me .voice-duration{color:rgba(255,255,255,.8)}
   .msg-group.other .voice-duration{color:var(--muted)}
 
-  /* PREVIEW BAR */
+  /* REPLY BAR (above input) */
+  #replyBar{display:none;padding:8px 24px;background:var(--surface);border-top:1px solid var(--accent);align-items:center;gap:10px;flex-shrink:0}
+  #replyBar.show{display:flex}
+  .reply-preview{flex:1;font-size:11px;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .reply-preview strong{color:var(--accent)}
+  #cancelReply{background:none;border:none;color:var(--muted);font-size:20px;cursor:pointer;line-height:1}
+  #cancelReply:hover{color:var(--red)}
+
+  /* EDIT BAR */
+  #editBar{display:none;padding:6px 24px;background:rgba(124,109,250,.08);border-top:1px solid var(--accent);align-items:center;gap:10px;flex-shrink:0}
+  #editBar.show{display:flex}
+  .edit-label{font-size:11px;color:var(--accent)}
+  #cancelEdit{background:none;border:none;color:var(--muted);font-size:20px;cursor:pointer;line-height:1;margin-left:auto}
+  #cancelEdit:hover{color:var(--red)}
+
+  /* PREVIEW */
   #previewBar{display:none;padding:8px 24px;background:var(--surface);border-top:1px solid var(--border);align-items:center;gap:12px;flex-shrink:0}
   #previewBar.show{display:flex}
   #imgPreviewThumb{width:44px;height:44px;object-fit:cover;border-radius:8px;border:1px solid var(--border)}
   .preview-icon{width:44px;height:44px;border-radius:8px;background:var(--accent);display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0}
   #previewName{font-size:11px;color:var(--muted);flex:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-  .rm-btn{background:none;border:none;color:var(--red);font-size:22px;cursor:pointer;line-height:1;padding:0 2px}
+  .rm-btn{background:none;border:none;color:var(--red);font-size:22px;cursor:pointer;line-height:1}
 
   /* REC BAR */
   #recBar{display:none;padding:6px 24px;background:rgba(250,109,109,.08);border-top:1px solid rgba(250,109,109,.2);align-items:center;gap:10px;flex-shrink:0}
@@ -167,7 +168,6 @@
   .rec-dot{width:8px;height:8px;border-radius:50%;background:var(--red);animation:recPulse 1s infinite}
   #recTimer{font-size:12px;color:var(--red)}
   #recCancel{background:none;border:none;color:var(--muted);font-size:12px;cursor:pointer;margin-left:auto}
-  #recCancel:hover{color:var(--red)}
   @keyframes recPulse{0%,100%{opacity:1}50%{opacity:.3}}
 
   /* INPUT */
@@ -191,8 +191,7 @@
   #lightboxImg{max-width:90vw;max-height:85vh;border-radius:10px;object-fit:contain}
   .lb-close{position:fixed;top:18px;right:22px;background:rgba(255,255,255,.1);border:none;color:white;font-size:20px;width:36px;height:36px;border-radius:50%;cursor:pointer;display:flex;align-items:center;justify-content:center}
   .lb-close:hover{background:rgba(255,255,255,.2)}
-  .lb-download{background:var(--accent);border:none;border-radius:8px;padding:10px 28px;color:white;font-family:'Syne',sans-serif;font-size:13px;letter-spacing:1px;cursor:pointer}
-  .lb-download:hover{opacity:.85}
+  .lb-dl{background:var(--accent);border:none;border-radius:8px;padding:10px 28px;color:white;font-family:'Syne',sans-serif;font-size:13px;cursor:pointer}
 </style>
 </head>
 <body>
@@ -201,14 +200,8 @@
   <div class="join-box">
     <div class="join-title">SIGNAL</div>
     <div class="join-sub">// реальный чат в реальном времени</div>
-    <div>
-      <div class="field-label">АДРЕС СЕРВЕРА</div>
-      <input type="text" id="serverUrl" placeholder="wss://твой-сервер.railway.app"/>
-    </div>
-    <div>
-      <div class="field-label">ТВОЁ ИМЯ</div>
-      <input type="text" id="nameInput" placeholder="Введи имя..." maxlength="20"/>
-    </div>
+    <div><div class="field-label">АДРЕС СЕРВЕРА</div><input type="text" id="serverUrl" placeholder="wss://твой-сервер.railway.app"/></div>
+    <div><div class="field-label">ТВОЁ ИМЯ</div><input type="text" id="nameInput" placeholder="Введи имя..." maxlength="20"/></div>
     <button class="join-btn" id="joinBtn" onclick="connect()">ВОЙТИ В ЧАТ</button>
     <div class="conn-status" id="connStatus">введи адрес сервера и имя</div>
   </div>
@@ -216,10 +209,7 @@
 
 <div class="header">
   <div class="logo">SIGNAL</div>
-  <div class="status-bar">
-    <div class="dot off" id="statusDot"></div>
-    <span id="statusText">не подключён</span>
-  </div>
+  <div class="status-bar"><div class="dot off" id="statusDot"></div><span id="statusText">не подключён</span></div>
 </div>
 
 <div class="layout">
@@ -230,6 +220,20 @@
   </div>
   <div class="chat-area">
     <div id="messages"></div>
+
+    <!-- REPLY BAR -->
+    <div id="replyBar">
+      <span style="font-size:16px">↩</span>
+      <div class="reply-preview" id="replyPreview"></div>
+      <button id="cancelReply" onclick="cancelReply()">×</button>
+    </div>
+
+    <!-- EDIT BAR -->
+    <div id="editBar">
+      <span style="font-size:14px">✏️</span>
+      <div class="edit-label">Редактирование сообщения</div>
+      <button id="cancelEdit" onclick="cancelEdit()">×</button>
+    </div>
 
     <div id="previewBar">
       <img id="imgPreviewThumb" src="" alt="" style="display:none">
@@ -246,9 +250,9 @@
 
     <div class="input-area">
       <div class="input-row">
-        <button class="tool-btn" onclick="document.getElementById('fileInput').click()" title="Картинка">🖼</button>
+        <button class="tool-btn" onclick="document.getElementById('fileInput').click()">🖼</button>
         <input type="file" id="fileInput" accept="image/*" onchange="handleImageSelect(event)">
-        <button class="tool-btn" id="micBtn" onmousedown="startRecording()" onmouseup="stopRecording()" ontouchstart="startRecording()" ontouchend="stopRecording()" title="Держи для голосового">🎤</button>
+        <button class="tool-btn" id="micBtn" onmousedown="startRecording()" onmouseup="stopRecording()" ontouchstart="startRecording()" ontouchend="stopRecording()">🎤</button>
         <textarea id="msgInput" rows="1" placeholder="Написать сообщение..." disabled></textarea>
         <button class="send-btn" id="sendBtn" onclick="sendMsg()" disabled>➤</button>
       </div>
@@ -259,32 +263,26 @@
 <div id="lightbox" onclick="closeLightbox()">
   <button class="lb-close" onclick="closeLightbox()">✕</button>
   <img id="lightboxImg" src="" alt="">
-  <button class="lb-download" onclick="downloadImg(event)">⬇ Скачать</button>
+  <button class="lb-dl" onclick="downloadImg(event)">⬇ Скачать</button>
 </div>
 
 <script>
 let ws=null, myName='', lbSrc='';
 let pendingImage=null, pendingVoice=null;
-
-// msgId → { emoji → Set(names) }
-const reactions = {};
-// msgId → DOM group element
-const msgElements = {};
-
-const EMOJIS = ['👍','❤️','😂','😮','😢','🔥','👏','🎉','💀','🤯'];
+let replyTo=null;   // { id, name, text }
+let editingId=null; // msgId редактируемого сообщения
+const reactions={}, msgElements={};
+const EMOJIS=['👍','❤️','😂','😮','😢','🔥','👏','🎉','💀','🤯'];
 
 // ── CONNECT ──
-function connect() {
+function connect(){
   const url=document.getElementById('serverUrl').value.trim();
   const name=document.getElementById('nameInput').value.trim();
   const st=document.getElementById('connStatus');
   if(!url||!name){st.textContent='⚠ Заполни оба поля';st.className='conn-status err';return;}
   myName=name; st.textContent='Подключаемся...'; st.className='conn-status';
   document.getElementById('joinBtn').disabled=true;
-  try{ws=new WebSocket(url);}catch{
-    st.textContent='✗ Неверный адрес';st.className='conn-status err';
-    document.getElementById('joinBtn').disabled=false;return;
-  }
+  try{ws=new WebSocket(url);}catch{st.textContent='✗ Неверный адрес';st.className='conn-status err';document.getElementById('joinBtn').disabled=false;return;}
   ws.onopen=()=>{
     ws.send(JSON.stringify({type:'join',name}));
     document.getElementById('joinScreen').style.display='none';
@@ -300,204 +298,241 @@ function connect() {
     else if(msg.type==='message') addMessage(msg);
     else if(msg.type==='system') addSystem(msg.text);
     else if(msg.type==='users') renderUsers(msg.users);
-    else if(msg.type==='typing') updateTyping(msg.name, msg.isTyping);
+    else if(msg.type==='typing') updateTyping(msg.name,msg.isTyping);
     else if(msg.type==='reaction') applyReaction(msg);
+    else if(msg.type==='edit') applyEdit(msg);
+    else if(msg.type==='delete') applyDelete(msg);
   };
-  ws.onclose=()=>{
-    document.getElementById('statusDot').className='dot off';
-    document.getElementById('statusText').textContent='отключён';
-    document.getElementById('msgInput').disabled=true;
-    document.getElementById('sendBtn').disabled=true;
-  };
-  ws.onerror=()=>{
-    st.textContent='✗ Не удалось подключиться';st.className='conn-status err';
-    document.getElementById('joinBtn').disabled=false;
-    document.getElementById('joinScreen').style.display='flex';
-  };
+  ws.onclose=()=>{document.getElementById('statusDot').className='dot off';document.getElementById('statusText').textContent='отключён';document.getElementById('msgInput').disabled=true;document.getElementById('sendBtn').disabled=true;};
+  ws.onerror=()=>{st.textContent='✗ Не удалось подключиться';st.className='conn-status err';document.getElementById('joinBtn').disabled=false;document.getElementById('joinScreen').style.display='flex';};
 }
 
 // ── TYPING ──
-let typingTimeout=null;
-let typingUsers=new Set();
-
+let typingTimeout=null, typingUsers=new Set();
 document.getElementById('msgInput').addEventListener('input',function(){
-  this.style.height='auto';
-  this.style.height=Math.min(this.scrollHeight,120)+'px';
+  this.style.height='auto';this.style.height=Math.min(this.scrollHeight,120)+'px';
   if(!ws||ws.readyState!==1) return;
   ws.send(JSON.stringify({type:'typing',isTyping:true}));
   clearTimeout(typingTimeout);
-  typingTimeout=setTimeout(()=>{
-    if(ws&&ws.readyState===1) ws.send(JSON.stringify({type:'typing',isTyping:false}));
-  },2000);
+  typingTimeout=setTimeout(()=>{if(ws&&ws.readyState===1)ws.send(JSON.stringify({type:'typing',isTyping:false}));},2000);
 });
-
-function updateTyping(name, isTyping) {
+function updateTyping(name,isTyping){
   if(name===myName) return;
-  if(isTyping) typingUsers.add(name);
-  else typingUsers.delete(name);
+  if(isTyping) typingUsers.add(name); else typingUsers.delete(name);
   renderTyping();
 }
-
-function renderTyping() {
+function renderTyping(){
   const bar=document.getElementById('typingBar');
-  // также показываем пузырь в чате
   const old=document.getElementById('typingBubble');
   if(old) old.remove();
-
-  if(typingUsers.size===0){
-    bar.innerHTML='';
-    return;
-  }
+  if(typingUsers.size===0){bar.innerHTML='';return;}
   const names=[...typingUsers];
-  const text=names.length===1
-    ? `${names[0]} печатает`
-    : `${names.join(', ')} печатают`;
-
+  const text=names.length===1?`${names[0]} печатает`:`${names.join(', ')} печатают`;
   bar.innerHTML=`<div class="typing-dots"><span></span><span></span><span></span></div><span style="font-size:11px;color:var(--accent)">${text}</span>`;
-
-  // Пузырь в чате
   const msgs=document.getElementById('messages');
-  const bubble=document.createElement('div');
-  bubble.id='typingBubble';
-  bubble.className='typing-bubble';
-  bubble.innerHTML=`<div class="typing-dots"><span></span><span></span><span></span></div><span style="font-size:11px;color:var(--muted)">${text}</span>`;
-  msgs.appendChild(bubble);
-  msgs.scrollTop=msgs.scrollHeight;
+  const b=document.createElement('div');
+  b.id='typingBubble';b.className='typing-bubble';
+  b.innerHTML=`<div class="typing-dots"><span></span><span></span><span></span></div><span style="font-size:11px;color:var(--muted)">${text}</span>`;
+  msgs.appendChild(b);msgs.scrollTop=msgs.scrollHeight;
 }
 
-// ── COLORS ──
-function nameColor(n){
-  const c=['#7c6dfa','#fa6d8a','#4dfa9a','#facc4d','#4dc8fa','#fa9a4d','#c84dfa'];
-  let h=0;for(let i=0;i<n.length;i++)h=(h*31+n.charCodeAt(i))%c.length;
-  return c[Math.abs(h)];
-}
+function nameColor(n){const c=['#7c6dfa','#fa6d8a','#4dfa9a','#facc4d','#4dc8fa','#fa9a4d','#c84dfa'];let h=0;for(let i=0;i<n.length;i++)h=(h*31+n.charCodeAt(i))%c.length;return c[Math.abs(h)];}
 
 // ── ADD MESSAGE ──
-function addMessage(msg) {
+function addMessage(msg){
   const msgs=document.getElementById('messages');
-  // Убрать typing bubble перед добавлением
   const tb=document.getElementById('typingBubble');
   if(tb) tb.remove();
 
   const isMe=msg.name===myName;
-  const msgId=msg.id || (msg.name+'_'+msg.time+'_'+Math.random());
-  msg.id=msgId;
-  reactions[msgId]={};
+  if(!msg.id) msg.id=msg.name+'_'+Date.now()+'_'+Math.random();
+  reactions[msg.id]={};
 
   const group=document.createElement('div');
   group.className='msg-group '+(isMe?'me':'other');
-  group.dataset.msgId=msgId;
-  msgElements[msgId]=group;
+  group.dataset.msgId=msg.id;
+  msgElements[msg.id]=group;
 
+  // META
   const meta=document.createElement('div');
   meta.className='msg-meta';
   meta.innerHTML=`<span style="color:${nameColor(msg.name)}">${msg.name}</span><span>${msg.time}</span>`;
+  if(msg.edited) meta.innerHTML+=`<span class="edited-tag">изменено</span>`;
   group.appendChild(meta);
 
+  // CONTENT WRAP
+  const wrap=document.createElement('div');
+  wrap.className='msg-wrap';
+
+  // Bubble (text)
   if(msg.image){
-    const wrap=document.createElement('div');
-    wrap.className='msg-wrap';
     const ib=document.createElement('div');
     ib.className='img-bubble';
     ib.onclick=()=>openLightbox(msg.image);
-    const im=document.createElement('img');
-    im.src=msg.image;im.alt='фото';
+    const im=document.createElement('img');im.src=msg.image;im.alt='фото';
     ib.appendChild(im);wrap.appendChild(ib);
-    wrap.appendChild(makeReactTrigger(msgId,group));
-    group.appendChild(wrap);
-  }
-
-  if(msg.voice){
-    const wrap=document.createElement('div');
-    wrap.className='msg-wrap';
+  } else if(msg.voice){
     wrap.appendChild(makeVoiceBubble(msg.voice,isMe));
-    wrap.appendChild(makeReactTrigger(msgId,group));
-    group.appendChild(wrap);
-  }
-
-  if(msg.text){
-    const wrap=document.createElement('div');
-    wrap.className='msg-wrap';
+  } else {
     const b=document.createElement('div');
-    b.className='bubble';b.textContent=msg.text;
+    b.className='bubble'+(msg.deleted?' deleted':'');
+    b.id='bubble_'+msg.id;
+    // Reply quote
+    if(msg.replyTo){
+      const q=document.createElement('div');
+      q.className='reply-quote';
+      q.innerHTML=`<div class="rq-name" style="color:${nameColor(msg.replyTo.name)}">${msg.replyTo.name}</div><div>${msg.replyTo.text||'📎 вложение'}</div>`;
+      q.onclick=()=>scrollToMsg(msg.replyTo.id);
+      b.appendChild(q);
+    }
+    const txt=document.createElement('span');
+    txt.textContent=msg.deleted?'Сообщение удалено':msg.text;
+    b.appendChild(txt);
     wrap.appendChild(b);
-    wrap.appendChild(makeReactTrigger(msgId,group));
-    group.appendChild(wrap);
   }
 
-  // Строка реакций
-  const reactRow=document.createElement('div');
-  reactRow.className='reactions';
-  reactRow.id='reactions_'+msgId;
-  group.appendChild(reactRow);
+  // ACTION BUTTONS
+  if(!msg.deleted){
+    const actions=document.createElement('div');
+    actions.className='msg-actions';
+
+    // Reply — для всех
+    const replyBtn=document.createElement('button');
+    replyBtn.className='act-btn';replyBtn.textContent='↩';replyBtn.title='Ответить';
+    replyBtn.onclick=()=>startReply(msg);
+    actions.appendChild(replyBtn);
+
+    // React
+    const reactBtn=document.createElement('button');
+    reactBtn.className='act-btn';reactBtn.textContent='😊';reactBtn.title='Реакция';
+    const picker=makePicker(msg.id,group);
+    group.appendChild(picker);
+    reactBtn.onclick=(e)=>{e.stopPropagation();document.querySelectorAll('.emoji-picker.show').forEach(p=>{if(p!==picker)p.classList.remove('show');});picker.classList.toggle('show');};
+    actions.appendChild(reactBtn);
+
+    // Edit / Delete — только свои
+    if(isMe && !msg.voice && !msg.image){
+      const editBtn=document.createElement('button');
+      editBtn.className='act-btn';editBtn.textContent='✏️';editBtn.title='Редактировать';
+      editBtn.onclick=()=>startEdit(msg);
+      actions.appendChild(editBtn);
+    }
+    if(isMe){
+      const delBtn=document.createElement('button');
+      delBtn.className='act-btn';delBtn.textContent='🗑';delBtn.title='Удалить';
+      delBtn.style.color=getComputedStyle(document.documentElement).getPropertyValue('--red');
+      delBtn.onclick=()=>deleteMsg(msg.id);
+      actions.appendChild(delBtn);
+    }
+
+    wrap.appendChild(actions);
+  }
+
+  group.appendChild(wrap);
+
+  // REACTIONS ROW
+  const rrow=document.createElement('div');
+  rrow.className='reactions';rrow.id='reactions_'+msg.id;
+  group.appendChild(rrow);
 
   msgs.appendChild(group);
   msgs.scrollTop=msgs.scrollHeight;
 }
 
-// ── REACTION TRIGGER (кнопка 😊) ──
-function makeReactTrigger(msgId, group) {
-  const btn=document.createElement('button');
-  btn.className='react-trigger';
-  btn.textContent='😊';
-  btn.title='Реакция';
+function scrollToMsg(id){
+  const el=msgElements[id];
+  if(el){el.scrollIntoView({behavior:'smooth',block:'center'});el.style.outline='1px solid var(--accent)';setTimeout(()=>el.style.outline='',1500);}
+}
 
+// ── REPLY ──
+function startReply(msg){
+  replyTo={id:msg.id,name:msg.name,text:msg.text||'📎 вложение'};
+  cancelEdit();
+  document.getElementById('replyBar').classList.add('show');
+  document.getElementById('replyPreview').innerHTML=`<strong>${msg.name}:</strong> ${replyTo.text.slice(0,60)}`;
+  document.getElementById('msgInput').focus();
+}
+function cancelReply(){replyTo=null;document.getElementById('replyBar').classList.remove('show');}
+
+// ── EDIT ──
+function startEdit(msg){
+  editingId=msg.id;
+  cancelReply();
+  document.getElementById('editBar').classList.add('show');
+  const input=document.getElementById('msgInput');
+  input.value=msg.text;input.focus();
+  input.style.height='auto';input.style.height=Math.min(input.scrollHeight,120)+'px';
+}
+function cancelEdit(){editingId=null;document.getElementById('editBar').classList.remove('show');document.getElementById('msgInput').value='';}
+
+function applyEdit(msg){
+  const group=msgElements[msg.id];
+  if(!group) return;
+  const bubble=document.getElementById('bubble_'+msg.id);
+  if(bubble){
+    // update text node (last child)
+    const spans=bubble.querySelectorAll('span');
+    const txtSpan=spans[spans.length-1];
+    if(txtSpan) txtSpan.textContent=msg.text;
+  }
+  // Add "изменено" tag
+  const meta=group.querySelector('.msg-meta');
+  if(meta&&!meta.querySelector('.edited-tag')){
+    const tag=document.createElement('span');tag.className='edited-tag';tag.textContent='изменено';
+    meta.appendChild(tag);
+  }
+}
+
+// ── DELETE ──
+function deleteMsg(id){
+  if(!ws||ws.readyState!==1) return;
+  if(!confirm('Удалить сообщение?')) return;
+  ws.send(JSON.stringify({type:'delete',msgId:id}));
+}
+function applyDelete(msg){
+  const group=msgElements[msg.id];
+  if(!group) return;
+  const bubble=document.getElementById('bubble_'+msg.id);
+  if(bubble){
+    bubble.classList.add('deleted');
+    const spans=bubble.querySelectorAll('span');
+    const txtSpan=spans[spans.length-1];
+    if(txtSpan) txtSpan.textContent='Сообщение удалено';
+    // Убрать кнопки Edit
+    group.querySelectorAll('.act-btn').forEach(b=>{if(b.textContent==='✏️')b.remove();});
+  }
+}
+
+// ── REACTIONS ──
+function makePicker(msgId,group){
   const picker=document.createElement('div');
   picker.className='emoji-picker';
   EMOJIS.forEach(em=>{
-    const span=document.createElement('span');
-    span.className='ep-emoji';
-    span.textContent=em;
-    span.onclick=(e)=>{
-      e.stopPropagation();
-      sendReaction(msgId,em);
-      picker.classList.remove('show');
-    };
+    const span=document.createElement('span');span.className='ep-emoji';span.textContent=em;
+    span.onclick=(e)=>{e.stopPropagation();sendReaction(msgId,em);picker.classList.remove('show');};
     picker.appendChild(span);
   });
-  group.appendChild(picker);
-
-  btn.onclick=(e)=>{
-    e.stopPropagation();
-    // закрыть все остальные
-    document.querySelectorAll('.emoji-picker.show').forEach(p=>{if(p!==picker)p.classList.remove('show');});
-    picker.classList.toggle('show');
-  };
-  return btn;
+  return picker;
 }
-
-document.addEventListener('click',()=>{
-  document.querySelectorAll('.emoji-picker.show').forEach(p=>p.classList.remove('show'));
-});
-
-// ── SEND REACTION ──
-function sendReaction(msgId,emoji){
-  if(!ws||ws.readyState!==1) return;
-  ws.send(JSON.stringify({type:'reaction',msgId,emoji}));
-}
-
-// ── APPLY REACTION (from server) ──
+document.addEventListener('click',()=>document.querySelectorAll('.emoji-picker.show').forEach(p=>p.classList.remove('show')));
+function sendReaction(msgId,emoji){if(!ws||ws.readyState!==1) return;ws.send(JSON.stringify({type:'reaction',msgId,emoji}));}
 function applyReaction(msg){
-  const {msgId,emoji,name,remove}=msg;
+  const{msgId,emoji,name,remove}=msg;
   if(!reactions[msgId]) reactions[msgId]={};
   if(!reactions[msgId][emoji]) reactions[msgId][emoji]=new Set();
-  if(remove) reactions[msgId][emoji].delete(name);
-  else reactions[msgId][emoji].add(name);
+  if(remove) reactions[msgId][emoji].delete(name); else reactions[msgId][emoji].add(name);
   if(reactions[msgId][emoji].size===0) delete reactions[msgId][emoji];
   renderReactions(msgId);
 }
-
 function renderReactions(msgId){
-  const row=document.getElementById('reactions_'+msgId);
-  if(!row) return;
+  const row=document.getElementById('reactions_'+msgId);if(!row) return;
   row.innerHTML='';
-  const data=reactions[msgId]||{};
-  Object.entries(data).forEach(([emoji,names])=>{
-    if(names.size===0) return;
+  Object.entries(reactions[msgId]||{}).forEach(([emoji,names])=>{
+    if(!names.size) return;
     const pill=document.createElement('div');
     pill.className='reaction-pill'+(names.has(myName)?' mine':'');
     pill.title=[...names].join(', ');
-    pill.innerHTML=`<span class="rc">${emoji}</span><span class="rn">${names.size}</span>`;
+    pill.innerHTML=`<span>${emoji}</span><span class="rn">${names.size}</span>`;
     pill.onclick=()=>sendReaction(msgId,emoji);
     row.appendChild(pill);
   });
@@ -505,110 +540,31 @@ function renderReactions(msgId){
 
 // ── VOICE BUBBLE ──
 function makeVoiceBubble(dataUrl,isMe){
-  const wrap=document.createElement('div');
-  wrap.className='voice-bubble';
-  const btn=document.createElement('button');
-  btn.className='voice-play-btn';btn.textContent='▶';
-  const wf=document.createElement('div');
-  wf.className='voice-waveform';
+  const wrap=document.createElement('div');wrap.className='voice-bubble';
+  const btn=document.createElement('button');btn.className='voice-play-btn';btn.textContent='▶';
+  const wf=document.createElement('div');wf.className='voice-waveform';
   const bars=[];const N=28;
-  for(let i=0;i<N;i++){
-    const bar=document.createElement('div');
-    bar.className='voice-bar';
-    bar.style.height=(4+Math.random()*20)+'px';
-    wf.appendChild(bar);bars.push(bar);
-  }
-  const dur=document.createElement('div');
-  dur.className='voice-duration';dur.textContent='0:00';
+  for(let i=0;i<N;i++){const bar=document.createElement('div');bar.className='voice-bar';bar.style.height=(4+Math.random()*20)+'px';wf.appendChild(bar);bars.push(bar);}
+  const dur=document.createElement('div');dur.className='voice-duration';dur.textContent='0:00';
   let audio=null,playing=false,raf=null;
   function fmt(s){return Math.floor(s/60)+':'+(s%60).toString().padStart(2,'0');}
-  function init(){
-    if(audio) return;
-    audio=new Audio(dataUrl);
-    audio.onloadedmetadata=()=>{dur.textContent=fmt(Math.round(audio.duration));};
-    audio.onended=()=>{playing=false;btn.textContent='▶';cancelAnimationFrame(raf);bars.forEach(b=>b.classList.remove('active'));};
-  }
-  function animate(){
-    if(!audio) return;
-    const p=audio.currentTime/(audio.duration||1);
-    const a=Math.floor(p*N);
-    bars.forEach((b,i)=>b.classList.toggle('active',i<=a));
-    dur.textContent=fmt(Math.floor(audio.currentTime));
-    raf=requestAnimationFrame(animate);
-  }
+  function init(){if(audio)return;audio=new Audio(dataUrl);audio.onloadedmetadata=()=>{dur.textContent=fmt(Math.round(audio.duration));};audio.onended=()=>{playing=false;btn.textContent='▶';cancelAnimationFrame(raf);bars.forEach(b=>b.classList.remove('active'));};}
+  function animate(){if(!audio)return;const p=audio.currentTime/(audio.duration||1);const a=Math.floor(p*N);bars.forEach((b,i)=>b.classList.toggle('active',i<=a));dur.textContent=fmt(Math.floor(audio.currentTime));raf=requestAnimationFrame(animate);}
   btn.onclick=()=>{init();if(playing){audio.pause();playing=false;btn.textContent='▶';cancelAnimationFrame(raf);}else{audio.play();playing=true;btn.textContent='⏸';animate();}};
   wf.onclick=(e)=>{init();const r=wf.getBoundingClientRect();audio.currentTime=(e.clientX-r.left)/r.width*(audio.duration||0);};
-  wrap.appendChild(btn);wrap.appendChild(wf);wrap.appendChild(dur);
-  return wrap;
+  wrap.appendChild(btn);wrap.appendChild(wf);wrap.appendChild(dur);return wrap;
 }
 
-function addSystem(text){
-  const msgs=document.getElementById('messages');
-  const d=document.createElement('div');
-  d.className='sys-msg';d.textContent='// '+text;
-  msgs.appendChild(d);msgs.scrollTop=msgs.scrollHeight;
-}
-
-function renderUsers(users){
-  const list=document.getElementById('userList');
-  list.innerHTML='';
-  users.forEach(u=>{
-    const item=document.createElement('div');
-    item.className='user-item';
-    item.innerHTML=`<div class="uavatar" style="background:${nameColor(u)}20;color:${nameColor(u)};border:1px solid ${nameColor(u)}40">${u[0].toUpperCase()}</div><div class="uname">${u}</div>${u===myName?'<div class="you-tag">ты</div>':''}`;
-    list.appendChild(item);
-  });
-}
+function addSystem(text){const msgs=document.getElementById('messages');const d=document.createElement('div');d.className='sys-msg';d.textContent='// '+text;msgs.appendChild(d);msgs.scrollTop=msgs.scrollHeight;}
+function renderUsers(users){const list=document.getElementById('userList');list.innerHTML='';users.forEach(u=>{const item=document.createElement('div');item.className='user-item';item.innerHTML=`<div class="uavatar" style="background:${nameColor(u)}20;color:${nameColor(u)};border:1px solid ${nameColor(u)}40">${u[0].toUpperCase()}</div><div class="uname">${u}</div>${u===myName?'<div class="you-tag">ты</div>':''}`;list.appendChild(item);});}
 
 // ── IMAGE ──
-function handleImageSelect(e){
-  const file=e.target.files[0];if(!file) return;
-  if(file.size>4*1024*1024){alert('Максимум 4 МБ!');return;}
-  const reader=new FileReader();
-  reader.onload=ev=>{
-    pendingImage=ev.target.result;pendingVoice=null;
-    document.getElementById('imgPreviewThumb').src=ev.target.result;
-    document.getElementById('imgPreviewThumb').style.display='block';
-    document.getElementById('voicePreviewIcon').style.display='none';
-    document.getElementById('previewName').textContent=file.name;
-    document.getElementById('previewBar').classList.add('show');
-  };
-  reader.readAsDataURL(file);e.target.value='';
-}
+function handleImageSelect(e){const file=e.target.files[0];if(!file)return;if(file.size>4*1024*1024){alert('Максимум 4 МБ!');return;}const reader=new FileReader();reader.onload=ev=>{pendingImage=ev.target.result;pendingVoice=null;document.getElementById('imgPreviewThumb').src=ev.target.result;document.getElementById('imgPreviewThumb').style.display='block';document.getElementById('voicePreviewIcon').style.display='none';document.getElementById('previewName').textContent=file.name;document.getElementById('previewBar').classList.add('show');};reader.readAsDataURL(file);e.target.value='';}
 
-// ── VOICE ──
+// ── VOICE REC ──
 let mediaRecorder=null,audioChunks=[],recInterval=null,recSeconds=0;
-async function startRecording(){
-  if(mediaRecorder) return;
-  try{
-    const stream=await navigator.mediaDevices.getUserMedia({audio:true});
-    const mime=MediaRecorder.isTypeSupported('audio/webm;codecs=opus')?'audio/webm;codecs=opus':MediaRecorder.isTypeSupported('audio/webm')?'audio/webm':'audio/ogg';
-    mediaRecorder=new MediaRecorder(stream,{mimeType:mime});
-    audioChunks=[];
-    mediaRecorder.ondataavailable=e=>{if(e.data.size>0)audioChunks.push(e.data);};
-    mediaRecorder.onstop=()=>{
-      stream.getTracks().forEach(t=>t.stop());
-      const blob=new Blob(audioChunks,{type:mime});
-      if(blob.size>5*1024*1024){alert('Слишком длинное!');return;}
-      const reader=new FileReader();
-      reader.onload=ev=>{
-        pendingVoice=ev.target.result;pendingImage=null;
-        document.getElementById('imgPreviewThumb').style.display='none';
-        document.getElementById('voicePreviewIcon').style.display='flex';
-        document.getElementById('previewName').textContent='голосовое • '+fmtSec(recSeconds);
-        document.getElementById('previewBar').classList.add('show');
-        document.getElementById('recBar').classList.remove('show');
-      };
-      reader.readAsDataURL(blob);
-    };
-    mediaRecorder.start();recSeconds=0;
-    document.getElementById('recBar').classList.add('show');
-    document.getElementById('recTimer').textContent='0:00';
-    document.getElementById('micBtn').classList.add('recording');
-    recInterval=setInterval(()=>{recSeconds++;document.getElementById('recTimer').textContent=fmtSec(recSeconds);if(recSeconds>=120)stopRecording();},1000);
-  }catch{alert('Нет доступа к микрофону!');}
-}
-function stopRecording(){if(!mediaRecorder||mediaRecorder.state==='inactive') return;clearInterval(recInterval);document.getElementById('micBtn').classList.remove('recording');mediaRecorder.stop();mediaRecorder=null;}
+async function startRecording(){if(mediaRecorder)return;try{const stream=await navigator.mediaDevices.getUserMedia({audio:true});const mime=MediaRecorder.isTypeSupported('audio/webm;codecs=opus')?'audio/webm;codecs=opus':MediaRecorder.isTypeSupported('audio/webm')?'audio/webm':'audio/ogg';mediaRecorder=new MediaRecorder(stream,{mimeType:mime});audioChunks=[];mediaRecorder.ondataavailable=e=>{if(e.data.size>0)audioChunks.push(e.data);};mediaRecorder.onstop=()=>{stream.getTracks().forEach(t=>t.stop());const blob=new Blob(audioChunks,{type:mime});if(blob.size>5*1024*1024){alert('Слишком длинное!');return;}const reader=new FileReader();reader.onload=ev=>{pendingVoice=ev.target.result;pendingImage=null;document.getElementById('imgPreviewThumb').style.display='none';document.getElementById('voicePreviewIcon').style.display='flex';document.getElementById('previewName').textContent='голосовое • '+fmtSec(recSeconds);document.getElementById('previewBar').classList.add('show');document.getElementById('recBar').classList.remove('show');};reader.readAsDataURL(blob);};mediaRecorder.start();recSeconds=0;document.getElementById('recBar').classList.add('show');document.getElementById('recTimer').textContent='0:00';document.getElementById('micBtn').classList.add('recording');recInterval=setInterval(()=>{recSeconds++;document.getElementById('recTimer').textContent=fmtSec(recSeconds);if(recSeconds>=120)stopRecording();},1000);}catch{alert('Нет доступа к микрофону!');}}
+function stopRecording(){if(!mediaRecorder||mediaRecorder.state==='inactive')return;clearInterval(recInterval);document.getElementById('micBtn').classList.remove('recording');mediaRecorder.stop();mediaRecorder=null;}
 function cancelRecording(){if(mediaRecorder&&mediaRecorder.state!=='inactive'){mediaRecorder.stream.getTracks().forEach(t=>t.stop());mediaRecorder.stop();}mediaRecorder=null;audioChunks=[];clearInterval(recInterval);document.getElementById('micBtn').classList.remove('recording');document.getElementById('recBar').classList.remove('show');}
 function fmtSec(s){return Math.floor(s/60)+':'+(s%60).toString().padStart(2,'0');}
 function removeAttachment(){pendingImage=null;pendingVoice=null;document.getElementById('previewBar').classList.remove('show');document.getElementById('imgPreviewThumb').style.display='none';document.getElementById('voicePreviewIcon').style.display='none';}
@@ -617,15 +573,24 @@ function removeAttachment(){pendingImage=null;pendingVoice=null;document.getElem
 function sendMsg(){
   const input=document.getElementById('msgInput');
   const text=input.value.trim();
+
+  // EDIT MODE
+  if(editingId){
+    if(!text){cancelEdit();return;}
+    if(ws&&ws.readyState===1) ws.send(JSON.stringify({type:'edit',msgId:editingId,text}));
+    cancelEdit();
+    return;
+  }
+
   if(!text&&!pendingImage&&!pendingVoice) return;
   if(!ws||ws.readyState!==1) return;
   const payload={type:'message',text:text||''};
   if(pendingImage) payload.image=pendingImage;
   if(pendingVoice) payload.voice=pendingVoice;
+  if(replyTo) payload.replyTo=replyTo;
   ws.send(JSON.stringify(payload));
   input.value='';input.style.height='auto';
-  removeAttachment();
-  // Сбросить typing
+  removeAttachment();cancelReply();
   clearTimeout(typingTimeout);
   if(ws&&ws.readyState===1) ws.send(JSON.stringify({type:'typing',isTyping:false}));
 }
@@ -635,25 +600,16 @@ function openLightbox(src){lbSrc=src;document.getElementById('lightboxImg').src=
 function closeLightbox(){document.getElementById('lightbox').classList.remove('show');}
 function downloadImg(e){e.stopPropagation();const a=document.createElement('a');a.href=lbSrc;a.download='image.png';a.click();}
 
-document.addEventListener('keydown',e=>{if(e.key==='Escape')closeLightbox();});
-document.getElementById('msgInput').addEventListener('keydown',function(e){if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();sendMsg();}});
+document.addEventListener('keydown',e=>{if(e.key==='Escape'){closeLightbox();cancelEdit();cancelReply();}});
+document.getElementById('msgInput').addEventListener('keydown',function(e){if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();sendMsg();}if(e.key==='Escape'&&editingId){cancelEdit();}});
 document.getElementById('nameInput').addEventListener('keydown',e=>{if(e.key==='Enter')connect();});
 
 document.addEventListener('paste',e=>{
   if(!ws||ws.readyState!==1) return;
   for(const item of e.clipboardData.items){
     if(item.type.startsWith('image/')){
-      const file=item.getAsFile();
-      if(file.size>4*1024*1024){alert('Слишком большая!');return;}
-      const reader=new FileReader();
-      reader.onload=ev=>{
-        pendingImage=ev.target.result;pendingVoice=null;
-        document.getElementById('imgPreviewThumb').src=ev.target.result;
-        document.getElementById('imgPreviewThumb').style.display='block';
-        document.getElementById('voicePreviewIcon').style.display='none';
-        document.getElementById('previewName').textContent='из буфера обмена';
-        document.getElementById('previewBar').classList.add('show');
-      };
+      const file=item.getAsFile();if(file.size>4*1024*1024){alert('Слишком большая!');return;}
+      const reader=new FileReader();reader.onload=ev=>{pendingImage=ev.target.result;pendingVoice=null;document.getElementById('imgPreviewThumb').src=ev.target.result;document.getElementById('imgPreviewThumb').style.display='block';document.getElementById('voicePreviewIcon').style.display='none';document.getElementById('previewName').textContent='из буфера обмена';document.getElementById('previewBar').classList.add('show');};
       reader.readAsDataURL(file);break;
     }
   }
