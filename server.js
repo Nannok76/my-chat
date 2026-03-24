@@ -6,10 +6,10 @@ const server = http.createServer((req, res) => {
   res.end("Chat server is running ✅");
 });
 
-const wss = new WebSocketServer({ server, maxPayload: 10 * 1024 * 1024 }); // 10 МБ макс
+const wss = new WebSocketServer({ server, maxPayload: 20 * 1024 * 1024 }); // 20 МБ
 
-let clients = new Map(); // socket → username
-let history = []; // последние 50 сообщений
+let clients = new Map();
+let history = [];
 
 wss.on("connection", (ws) => {
   let username = null;
@@ -18,7 +18,6 @@ wss.on("connection", (ws) => {
     let msg;
     try { msg = JSON.parse(data); } catch { return; }
 
-    // Регистрация
     if (msg.type === "join") {
       username = msg.name.slice(0, 20).trim() || "Аноним";
       clients.set(ws, username);
@@ -28,7 +27,6 @@ wss.on("connection", (ws) => {
       return;
     }
 
-    // Сообщение (текст и/или картинка)
     if (msg.type === "message" && username) {
       const entry = {
         type: "message",
@@ -36,9 +34,11 @@ wss.on("connection", (ws) => {
         text: String(msg.text || "").slice(0, 1000),
         time: now()
       };
-      // Картинка — принимаем только base64 data URL
       if (msg.image && typeof msg.image === "string" && msg.image.startsWith("data:image/")) {
         entry.image = msg.image;
+      }
+      if (msg.voice && typeof msg.voice === "string" && msg.voice.startsWith("data:audio/")) {
+        entry.voice = msg.voice;
       }
       history.push(entry);
       if (history.length > 50) history.shift();
@@ -60,7 +60,7 @@ function broadcast(msg, exclude = null) {
   for (const [client] of clients) {
     if (client !== exclude && client.readyState === 1) client.send(data);
   }
-  if (exclude && (msg.type === "message")) exclude.send(data);
+  if (exclude && msg.type === "message") exclude.send(data);
 }
 
 function broadcastUsers() {
